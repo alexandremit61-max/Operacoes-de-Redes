@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrisaOpRede | Enterprise Operations</title>
+  <link rel="icon" type="image/png" href="assets/img/jangada-brisanet.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="main.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark">
+          <img src="assets/img/jangada-brisanet.png" class="brand-jangada" alt="Brisanet">
+          <span class="brand-name">brisa<span>OpRede</span></span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-chevron-left"></i></button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-group-label">Operação</div>
+        <button class="nav-item active" onclick="showPage('dashboard')" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></button>
+        <button class="nav-item" onclick="showPage('fibra')" data-page="fibra"><i class="fa-solid fa-network-wired"></i><span>Fibra</span></button>
+        <button class="nav-item" onclick="showPage('metro')" data-page="metro"><i class="fa-solid fa-city"></i><span>Metro</span></button>
+        <button class="nav-item" onclick="showPage('dwdm')" data-page="dwdm"><i class="fa-solid fa-wave-square"></i><span>DWDM</span></button>
+        <button class="nav-item" onclick="showPage('5g')" data-page="5g"><i class="fa-solid fa-tower-cell"></i><span>Sites 5G</span></button>
+
+        <div class="nav-group-label">Inteligência</div>
+        <button class="nav-item" onclick="showPage('alarms')" data-page="alarms"><i class="fa-solid fa-bell"></i><span>Alarmes</span><span class="nav-badge">3</span></button>
+        <button class="nav-item" onclick="showPage('analytics')" data-page="analytics"><i class="fa-solid fa-chart-line"></i><span>Analytics</span></button>
+        <button class="nav-item" onclick="showPage('logs')" data-page="logs"><i class="fa-solid fa-terminal"></i><span>Logs</span></button>
+        
+        <div class="nav-group-label">Sistema</div>
+        <button class="nav-item" onclick="showPage('settings')" data-page="settings"><i class="fa-solid fa-gear"></i><span>Configurações</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="health-pill">
+          <span class="dot dot-ok pulse-dot"></span>
+          <div class="health-info"><strong>Plataforma online</strong><small>SLA 99.98%</small></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar glass">
+        <div class="topbar-left">
+          <div class="crumbs">
+            <span class="crumb">Operações</span>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="crumb active" id="pageTitle">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="topbar-center">
+            <div class="ai-search">
+                <i class="fa-solid fa-sparkles"></i>
+                <input id="aiGlobalSearch" type="text" placeholder="Ask AI Assistant - ex: 'Perda de pacotes em Fortaleza/CE'" />
+                <kbd>⌘</kbd>
+            </div>
+        </div>
+
+        <div class="topbar-right">
+            <div class="net-status"><span class="pulse-dot"></span><span>Online</span></div>
+            <button class="icon-btn" id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-moon"></i></button>
+            <button class="icon-btn has-dot" title="Notificações"><i class="fa-regular fa-bell"></i></button>
+            <button class="icon-btn" title="Ações Rápidas"><i class="fa-solid fa-bolt"></i></button>
+            <div class="clock" id="clock">00:00:00</div>
+            
+            <div class="user-chip">
+                <div class="avatar">AR</div>
+                <div class="user-meta"><strong>Alexandre R.</strong><small>Operador</small></div>
+                <button class="btn-logout" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+      </header>
+
+      <section class="view" id="view">
+        <div class="page active" id="page-dashboard">
+          <div class="page-head"><h1>Visão Operacional</h1><p>Monitoramento em tempo real • 1,945 redes conectadas</p></div>
+          <div class="kpi-grid">
+            <div class="kpi card">
+                <div class="kpi-top"><span class="kpi-label">TOTAL REDES</span><i class="fa-solid fa-diagram-project blue-ic"></i></div>
+                <div class="kpi-value">1.248</div>
+                <div class="kpi-foot up"><i class="fa-solid fa-arrow-trend-up"></i> +2.4% vs ontem</div>
+                <svg class="sparkline blue-line" viewBox="0 0 100 30"><polyline points="0,20 20,15 40,25 60,10 80,18 100,5"></polyline></svg>
+            </div>
+            <div class="kpi card">
+                <div class="kpi-top"><span class="kpi-label">SITES ONLINE</span><i class="fa-solid fa-circle-check green-ic"></i></div>
+                <div class="kpi-value">2.654<small>/176</small></div>
+                <div class="kpi-foot up">Estável • 88.9%</div>
+                <svg class="sparkline green-line" viewBox="0 0 100 30"><polyline points="0,15 30,15 50,12 70,14 100,10"></polyline></svg>
+            </div>
+            <div class="kpi card">
+                <div class="kpi-top"><span class="kpi-label">EM ALERTA</span><i class="fa-solid fa-triangle-exclamation amber-ic"></i></div>
+                <div class="kpi-value">1</div>
+                <div class="kpi-foot warn">1 link com jitter alto</div>
+                <svg class="sparkline amber-line" viewBox="0 0 100 30"><polyline points="0,20 20,22 40,18 60,25 80,20 100,28"></polyline></svg>
+            </div>
+            <div class="kpi card">
+                <div class="kpi-top"><span class="kpi-label">CRÍTICOS</span><i class="fa-solid fa-circle-xmark red-ic"></i></div>
+                <div class="kpi-value">0</div>
+                <div class="kpi-foot ok">Nenhum incidente</div>
+                <svg class="sparkline red-line" viewBox="0 0 100 30"><polyline points="0,25 100,25"></polyline></svg>
+            </div>
+            <div class="kpi card">
+                <div class="kpi-top"><span class="kpi-label">LATÊNCIA MÉDIA</span><i class="fa-solid fa-stopwatch blue-ic"></i></div>
+                <div class="kpi-value">28<small>ms</small></div>
+                <div class="kpi-foot ok">Baseline &lt; 50ms</div>
+                <svg class="sparkline blue-line" viewBox="0 0 100 30"><polyline points="0,10 20,12 40,8 60,15 80,10 100,12"></polyline></svg>
+            </div>
+            <div class="kpi card">
+                <div class="kpi-top"><span class="kpi-label">PERFORMANCE IA</span><i class="fa-solid fa-brain purple-ic"></i></div>
+                <div class="kpi-value">98<small>%</small></div>
+                <div class="kpi-foot up">+1.2% precisão</div>
+                <svg class="sparkline purple-line" viewBox="0 0 100 30"><polyline points="0,20 20,18 40,22 60,15 80,10 100,8"></polyline></svg>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card"><div class="card-head"><h3>Status Geral Sites</h3><span class="chip green">Operacional</span></div><div class="canvas-wrap"><canvas id="chartPizza"></canvas></div></div>
+            <div class="card"><div class="card-head"><h3>Latência & Performance</h3><span class="chip blue">Realtime</span></div><div class="canvas-wrap"><canvas id="chartLinha"></canvas></div></div>
+          </div>
+          
+          <div class="grid-2 mt">
+            <div class="card">
+                <div class="card-head"><h3>Health Summary</h3><button class="btn-link">Ver todas <i class="fa-solid fa-arrow-right"></i></button></div>
+                <table class="data-table">
+                    <thead><tr><th>Rede</th><th>Health</th><th>Score</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>Fortaleza</td><td><span class="chip green">Fair</span></td><td>91</td><td>Stable</td></tr>
+                        <tr><td>Recife</td><td><span class="chip green">OK</span></td><td>95</td><td>Online</td></tr>
+                        <tr><td>Natal</td><td><span class="chip amber">Watch</span></td><td>82</td><td>Investigating</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card"><div class="card-head"><h3>Wireless Load</h3><span class="chip purple">Analytics</span></div><div class="canvas-wrap"><canvas id="chartWireless"></canvas></div></div>
+          </div>
+        </div>
+
+        <div class="page" id="page-fibra"><div class="map-shell card"><div id="map-fibra" class="map"></div></div></div>
+        <div class="page" id="page-metro"><div class="map-shell card"><div id="map-metro" class="map"></div></div></div>
+        <div class="page" id="page-dwdm"><div class="map-shell card"><div id="map-dwdm" class="map"></div></div></div>
+        <div class="page" id="page-5g"><div class="map-shell card"><div id="map-5g" class="map"></div></div></div>
+
+        <div class="page" id="page-alarms"><div class="card"><div class="card-head"><h3>Alarmes Ativos</h3></div><table class="data-table"><thead><tr><th>Status</th><th>Site</th><th>Descrição</th></tr></thead><tbody id="alarmsBody"></tbody></table></div></div>
+        <div class="page" id="page-analytics"><div class="grid-2"><div class="card"><div class="card-head"><h3>Trafego Agregado</h3></div><div class="canvas-wrap"><canvas id="chartTraffic"></canvas></div></div><div class="card"><div class="card-head"><h3>Perda de Pacotes</h3></div><div class="canvas-wrap"><canvas id="chartLoss"></canvas></div></div></div></div>
+        <div class="page" id="page-logs"><div class="card"><div id="logStream" class="log-stream"></div></div></div>
+      </section>
+
+      <div class="system-footer-line"></div>
+    </main>
+  </div>
+
+  <button class="ai-fab" id="aiFab">🤖</button>
+  <section class="ai-panel glass" id="aiPanel">
+    <header class="ai-panel-head" id="aiDragHandle">
+      <div class="ai-id">
+          <strong>Assistente IA</strong><br>
+          <small><span class="dot-ok dot"></span> Online • OpRede v2</small>
+      </div>
+      <div class="ai-controls">
+         <button class="icon-btn" id="aiExpandBtn"><i class="fa-solid fa-expand"></i></button>
+         <button class="icon-btn" id="aiCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </header>
+
+    <div class="ai-filters">
+        <button class="filter-pill active">Perda de pacotes 24h</button>
+        <button class="filter-pill">Relatório semanal</button>
+        <button class="filter-pill">Diagnóstico latência</button>
+    </div>
+
+    <div class="ai-messages" id="aiMessages"></div>
+
+    <form class="ai-composer" id="aiComposer">
+      <button type="button" class="icon-btn"><i class="fa-solid fa-paperclip"></i></button>
+      <button type="button" class="icon-btn"><i class="fa-solid fa-microphone"></i></button>
+      <input id="aiInput" type="text" placeholder="Pergunte à IA..." autocomplete="off" />
+      <button type="submit" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>
