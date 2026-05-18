@@ -1,5 +1,5 @@
 /* ============================================================
-   PUBLI-BRISA Enterprise JS v3.0 (CORRIGIDO)
+   OPERAÇÕES DE REDES-BRISA
    ============================================================ */
 
 const state = {
@@ -59,7 +59,7 @@ function initDashboardCharts() {
   ['chartPizza', 'chartLinha', 'chartWireless'].forEach(id => { const ex = Chart.getChart(id); if(ex) ex.destroy(); });
   new Chart(document.getElementById('chartPizza'), { type: 'doughnut', data: { labels: ['Online', 'Alerta', 'Crítico'], datasets: [{ data: [1432, 11, 2], backgroundColor: ['#00ff9d', '#ffae00', '#ff3131'], borderWidth: 0, cutout: '80%' }]}, options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
   new Chart(document.getElementById('chartLinha'), { type: 'line', data: { labels: ['00h','04h','08h','12h','16h','20h','24h'], datasets: [{ label: 'Latência ms', data: [25, 32, 28, 45, 38, 52, 35], borderColor: '#ff4500', fill: true, backgroundColor: 'rgba(255, 69, 0, 0.1)', tension: 0.4, pointRadius: 0 }]}, options: { maintainAspectRatio: false } });
-  new Chart(document.getElementById('chartWireless'), { type: 'bar', data: { labels: ['2.4G', '5G', '6E', 'Mesh', 'Backhaul'], datasets: [{ data: [400, 950, 1300, 650, 1100], backgroundColor: ['#ff4500', '#00bfff', '#7c3aed', '#00ff9d', '#ffae00'], borderRadius: 6 }]}, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+  new Chart(document.getElementById('chartWireless'), { type: 'bar', data: { labels: ['4G', '5G', '6E', 'Mesh', 'Backhaul'], datasets: [{ data: [400, 950, 1300, 650, 1100], backgroundColor: ['#ff4500', '#00bfff', '#7c3aed', '#00ff9d', '#ffae00'], borderRadius: 6 }]}, options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
 }
 
 function initAnalyticsCharts() {
